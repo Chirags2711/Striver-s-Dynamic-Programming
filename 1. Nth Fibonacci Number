@@ -45,3 +45,17 @@ public static int f(int n){
 	}
 	return dp[n];
 }
+
+//Space Optimization
+public static int f(int n){
+	if(n==1 || n==2) return 1;
+	int prev1 = 1; //Base Case
+	int prev2 = 1; //Base Case
+	int ans = 0;
+	for(int i=3; i<=n; i++){
+		ans = prev2 + prev1; //Hypothesis
+		prev1 = prev2; //Induction
+		prev2 = ans; //Induction
+	}
+	return ans;
+}
