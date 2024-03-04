@@ -11,3 +11,22 @@ public int fun(int i, int[] nums, int n, boolean zeroPicked){ //First
     int ans2 = fun(i+1, nums, n, zeroPicked);
     return Math.max(ans1, ans2);
 }
+
+//Space Optimized, different approach. Previous approach needs 2D dp, or is very complex.
+public int rob(int[] nums) {
+    int n = nums.length;
+    if(n==1) return nums[0];
+    return Math.max(robHelper(nums, 0, n-2), robHelper(nums, 1, n-1)); //If take 0, then don't take last. Vice Versa.
+}
+public int robHelper(int[] nums, int lo, int hi) { //answer from lo to hi
+    int n = nums.length;
+    int prev1 = 0; //taking house -1
+    int prev2 = 0; //taking house -2
+    int ans = 0;
+    for(int i=lo; i<=hi; i++){ //i elements
+        ans = Math.max(prev2, nums[i]+prev1);
+        prev1 = prev2;
+        prev2 = ans;
+    }
+    return ans;
+}
