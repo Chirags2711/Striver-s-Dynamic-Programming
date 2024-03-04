@@ -1,0 +1,13 @@
+//Circular
+//Recursive
+public int fun(int i, int[] nums, int n, boolean zeroPicked){ //First 
+    if(i>=n) return 0;
+    if(i==n-1) {
+        return zeroPicked ? 0 : nums[n-1];
+    }
+    if(i==0) zeroPicked = true;
+    int ans1 = nums[i] + fun(i+2, nums, n, zeroPicked);
+    if(i==0) zeroPicked = false;
+    int ans2 = fun(i+1, nums, n, zeroPicked);
+    return Math.max(ans1, ans2);
+}
