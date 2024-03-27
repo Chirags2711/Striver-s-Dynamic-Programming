@@ -1,0 +1,74 @@
+//Rec
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        if(m==0 || n==0) return 0;
+        int min = Integer.MAX_VALUE;
+        for(int col=0; col<n; col++){
+            min = Math.min(min, fun(0, col, m, n, matrix));
+        }
+        return min;
+    }
+    public int fun(int i, int j, int m, int n, int[][] matrix) {
+        if(i>=m) return 0;
+        if(j<0 || j>=n) return Integer.MAX_VALUE;
+        int ans1 = fun(i+1, j-1, m, n, matrix);
+        int ans2 = fun(i+1, j, m, n, matrix);
+        int ans3 = fun(i+1, j+1, m, n, matrix);
+        int min = matrix[i][j] + Math.min(ans1, Math.min(ans2, ans3));
+        return min;
+    }
+}
+
+//Mem
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        if(m==0 || n==0) return 0;
+        int dp[][] = new int[m][n];
+        for(int arr[]:dp){
+            Arrays.fill(arr, -1);
+        }
+        int min = Integer.MAX_VALUE;
+        for(int col=0; col<n; col++){
+            min = Math.min(min, fun(0, col, m, n, matrix, dp));
+        }
+        return min;
+    }
+    public int fun(int i, int j, int m, int n, int[][] matrix, int[][]dp) {
+        if(i>=m) return 0;
+        if(j<0 || j>=n) return Integer.MAX_VALUE;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int ans1 = fun(i+1, j-1, m, n, matrix, dp);
+        int ans2 = fun(i+1, j, m, n, matrix, dp);
+        int ans3 = fun(i+1, j+1, m, n, matrix, dp);
+        int min = matrix[i][j] + Math.min(ans1, Math.min(ans2, ans3));
+        return dp[i][j] = min;
+    }
+}
+
+//Tab
+class Solution {
+    public int minFallingPathSum(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        if(m==0 || n==0) return 0;
+        int dp[][] = new int[m][n];
+        for(int col=0; col<n; col++){
+            dp[m-1][col] = matrix[m-1][col];
+        }
+        for(int row = m-2; row>=0; row--){
+            for(int col = 0; col<n; col++){
+                int ans1 = Integer.MAX_VALUE, ans2 = Integer.MAX_VALUE, ans3 = Integer.MAX_VALUE;
+                if(col-1>=0) ans1 = dp[row+1][col-1];
+                ans2 = dp[row+1][col];
+                if(col+1<n) ans3 = dp[row+1][col+1];
+                dp[row][col] = matrix[row][col] + Math.min(ans1, Math.min(ans2, ans3));
+            }
+        }
+        int min = Integer.MAX_VALUE;
+        for(int col=0; col<n; col++){
+            min = Math.min(min, dp[0][col]);
+        }
+        return min;
+    }
+}
