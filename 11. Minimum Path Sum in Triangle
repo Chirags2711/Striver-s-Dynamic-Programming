@@ -1,0 +1,46 @@
+//Rec
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        return minimumTotalHelper(0, 0, triangle);
+    }
+    public int minimumTotalHelper(int i, int j, List<List<Integer>> triangle){
+        if(i>=triangle.size() || j>=triangle.get(i).size()) return 0;
+        int ans1 = minimumTotalHelper(i+1, j, triangle);
+        int ans2 = minimumTotalHelper(i+1, j+1, triangle);
+        return triangle.get(i).get(j) + Math.min(ans1, ans2);
+    }
+}
+
+//Mem
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int dp[][] = new int[triangle.size()][triangle.get(triangle.size()-1).size()];
+        for(int arr[]: dp){
+            Arrays.fill(arr, -1);
+        }
+        return minimumTotalHelper(0, 0, triangle, dp);
+    }
+    public int minimumTotalHelper(int i, int j, List<List<Integer>> triangle, int[][]dp){
+        if(i>=triangle.size() || j>=triangle.get(i).size()) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int ans1 = minimumTotalHelper(i+1, j, triangle, dp);
+        int ans2 = minimumTotalHelper(i+1, j+1, triangle, dp);
+        return dp[i][j] = triangle.get(i).get(j) + Math.min(ans1, ans2);
+    }
+}
+
+//Tab
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int dp[][] = new int[triangle.size()][triangle.get(triangle.size()-1).size()];
+        for(int i=triangle.size()-1; i>=0; i--){
+            for(int j=triangle.get(i).size()-1; j>=0; j--){
+                int ans1 = 0, ans2 = 0;
+                if(i+1<triangle.size()) ans1 = dp[i+1][j];
+                if(i+1<triangle.size() && j+1<triangle.get(i+1).size()) ans2 = dp[i+1][j+1];
+                dp[i][j] = triangle.get(i).get(j) + Math.min(ans1, ans2);
+            }
+        }
+        return dp[0][0];
+    }
+}
